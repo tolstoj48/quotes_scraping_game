@@ -1,47 +1,19 @@
 import requests
 from bs4 import BeautifulSoup
+from csv import reader
 from random import choice
-from time import sleep
-from csv import writer
-
-
-def populate_csv(result_list):
-    """
-    The function to scrape data into a csv file for offline version.
-    """
-    with open("./data/quotes.csv", "w") as file:
-        # comma is problematic for number of columns in texts
-        csv_writer = writer(file, delimiter=";")
-        for quote in result_list:
-            csv_writer.writerow(quote)
-    return
 
 
 def fetch_start_data():
     """
-    The function scrapes all the data from the web of quotes.
-    Gets all the quotes from all the available pages.
-    Returns the list of all the scraped quotes.
+    The function gets the data from the csv source file.
+    Returns the list of all the quotes.
     """
     result_list = []
-    flag_for_next = True
-    page_number = 1
-    while flag_for_next:
-        request_result = requests.get(
-            f"https://quotes.toscrape.com/page/{page_number}/")
-        soup = BeautifulSoup(request_result.text, "html.parser")
-        quotes = soup.select(".quote")
-        for quote in quotes:
-            result_list.append([
-                quote.select(".text")[0].get_text(),
-                quote.select(".author")[0].get_text(),
-                quote.select(".author")[0].find_next_sibling().attrs["href"]])
-        if len(soup.select(".next")) == 0:
-            flag_for_next = False
-        page_number += 1
-        sleep(2)
-    # populate csv file
-    #populate_csv(result_list)
+    with open("./data/quotes.csv", "r") as file:
+        csv_reader = reader(file, delimiter=";")
+        for quote in csv_reader:
+            result_list.append(quote)
     return result_list
 
 
@@ -67,6 +39,7 @@ def play_game(data):
     """
     question = choice(data)
     number_of_guesses = 4
+    print(question)
     hints = fetch_hint(question[2])
     print(question[0])
     while number_of_guesses:
