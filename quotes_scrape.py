@@ -30,9 +30,9 @@ def fetch_start_data():
 
 def fetch_hint(href):
     """
-    The function scrapes only data about the author of the hint.
+    The function scrapes only data about the author´s of the hint.
     Accepts correct link suffix of the quotes page.
-    Returns the tuple of the date and place of the author birth.
+    Returns the tuple of the date and place of the author´s birth.
     """
     request_result = requests.get(
         f"https://quotes.toscrape.com/{href}")
@@ -44,7 +44,7 @@ def fetch_hint(href):
 
 def game():
     """
-    The main gaim function. Driver of the whole game.
+    The main game function. The driver of the whole game.
     """
     # flag - does user want another game round?
     another_game = True
@@ -63,7 +63,7 @@ def play_game(data):
     """
     The function of the main game´s logic.
     Prints all the questions.
-    Returns the answer whether the user wants another round of the game.
+    Returns the answer, whether the user wants another round of the game.
     """
     question = data[randint(0, len(data))]
     number_of_guesses = 4
